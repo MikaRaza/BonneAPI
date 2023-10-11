@@ -12,7 +12,7 @@ from fastapi import FastAPI
 
 
 app = FastAPI(
-    title="Bonne-API",
+    title="Bon-APetIt",
     description=api_description,
     openapi_tags= tags_metadata
 )
