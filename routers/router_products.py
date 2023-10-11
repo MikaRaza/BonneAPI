@@ -14,7 +14,7 @@ class Product(BaseModel):
 class ProductNoID(BaseModel):
     name: str
 
-products = [
+products_list = [
     Product(id="s1", name="Apple"),
     Product(id="s2", name="Poire"),
     Product(id="ss3", name="Table")
@@ -23,7 +23,7 @@ products = [
 # Verbs + Endpoints
 @router.get('/', response_model=List[products])
 async def get_product():
-    return products
+    return products_list
 
 # 1. Exercice (10min) Create new products: POST
 # response_model permet de définir de type de réponse (ici nous retournons le products avec sont id)
