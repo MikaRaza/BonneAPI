@@ -1,7 +1,7 @@
 # Liste des tags utilises dans la doc
 tags_metadata = [
     {
-        "name": "Students",
-        "description": "Create, Modify, Delete, or List Students of your Training Center.",
+        "name": "products",
+        "description": "Create, Modify, Delete, or List products of your Training Center.",
     }
 ]

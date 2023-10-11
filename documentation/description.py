@@ -1,9 +1,8 @@
 api_description = """
-# Spécification
-"Students" auront des "Attendances" pour des "Sessions"
+# Pour trouver votre API-ritif
 
 Utilisateurs, lien vers une ressource
 
-API vendu à des centre de formations ... "Center" -> Sessions + Students -> Attendances
+API vendu à des centre de ventes de nourittures (Supermarchés, Episiri) ... "Center" -> Sessions + products -> Attendances
 
 """
