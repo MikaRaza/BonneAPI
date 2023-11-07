@@ -1,50 +1,115 @@
-from fastapi import APIRouter, HTTPException, Depends
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends, HTTPException
+
+from fastapi.security import OAuth2PasswordBearer
+
+from fastapi.security.oauth2 import OAuth2PasswordRequestForm
+
+from classes.schema_dto import User
+
 from firebase_admin import auth
-from database.firebase import db
+
+from database.firebase import authSession
+
+ 
+
+ 
 
 router = APIRouter(
-    tags=["Auth"],
-    prefix='/auth'
+
+      tags=["Auth"],
+
+      prefix='/auth'
+
 )
 
-class User(BaseModel):
-    email: str
-    password: str
+ 
 
-# Create new user
+  #create new user
+
 @router.post('/signup', status_code=201)
+
 async def create_an_account(user_body: User):
+
     try:
+
         user = auth.create_user(
-            email=user_body.email,
-            password=user_body.password
+
+            email = user_body.email,
+
+            password = user_body.password
+
         )
-        # You can optionally store additional user information in Firebase
-        user_data = {"email": user.email, "uid": user.uid}
-        db.child("users").child(user.uid).set(user_data)
-        return {"message": f"New user created with id: {user.uid}"}
+
+        return {
+
+        "message": f"Nouvel utilisateur créé avec id : {user.uid}"
+
+        }
+
     except auth.EmailAlreadyExistsError:
+
         raise HTTPException(
+
             status_code=409,
-            detail=f"An account already exists for: {user_body.email}"
+
+            detail=f"Un compte existe déjà pour : {user_body.email}"
+
         )
 
-# Login endpoint
-@router.post('/login')
-async def create_swagger_token(user: User):
-    # Implement your login logic here
-    # Typically, you'd verify the user's credentials, generate a JWT token, and return it.
-    # You can use a library like PyJWT for JWT token creation.
-    # For the sake of example, a simple response is provided here.
-    return {"message": "Logged in successfully"}
+ 
 
-# Protect route to get personal data
+#Login endpoint
+
+ 
+
+@router.post('/login')
+
+async def create_swagger_token(user_credentials:OAuth2PasswordRequestForm = Depends()):
+
+    try:
+
+        print(user_credentials)
+
+        user = authRecipe.sign_in_with_email_and_password(email=user_credentials.username,
+
+                                                           password = user_credentials.password)
+
+        token = user['idToken']
+
+        print(token)
+
+        return {
+
+            "access_token" : token,
+
+            "token_type": "bearer"
+
+        }
+
+    except:
+
+        raise HTTPException(
+
+            status_code=401, details="Invalid Credentials"
+
+        )
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
+
+def get_current_user(provided_token: str = Depends(oauth2_scheme)):
+
+    decoded_token = auth.verify_id_token(provided_token)
+
+    decoded_token['idToken']=provided_token
+
+    return decoded_token
+
+ 
+
+#Protect route to get personal data
+
 @router.get('/me')
-async def secure_endpoint(current_user: dict = Depends(auth.get_user)):
-    # The `Depends(auth.get_user)` decorator will require authentication.
-    # You can now access the user's information.
-    user_uid = current_user.uid
-    # Fetch the user's data from Firebase or your database
-    user_data = db.child("users").child(user_uid).get().val()
-    return {"message": "Secure endpoint", "user_data": user_data}
+
+def secure_endoint(userData: int = Depends(get_current_user)):
+
+    return userData
