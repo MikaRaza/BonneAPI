@@ -5,5 +5,5 @@ Utilisateurs, lien vers une ressource
 
 API vendu à des centre de ventes de nourittures (Supermarchés, Episiri) ... "Center" -> Sessions + products -> Attendances
 
-[checkout](/stripe/checkout)
+[checkout](/Stripe/checkout)
 """
