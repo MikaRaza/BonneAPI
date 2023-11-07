@@ -13,7 +13,7 @@ config = dotenv_values(".env")
 stripe.api_key = config['STRIPE_SK']
 
 
-@router.post('/checkout')
+@router.get('/checkout')
 
 async def stripe_checkout():
 
