@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, Header, Request
+from fastapi.responses import RedirectResponse
 from routers.router_auth import secure_endpoint
 import stripe
 from firebase_admin import auth
