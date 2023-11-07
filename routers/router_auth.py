@@ -32,7 +32,7 @@ async def create_an_account(user_body: User):
 async def create_swagger_token(user_credentials: OAuth2PasswordRequestForm = Depends()):
     try:
         print(user_credentials)
-        user = authRecipe.sign_in_with_email_and_password(email=user_credentials.username, password=user_credentials.password)
+        user = authSession.sign_in_with_email_and_password(email=user_credentials.username, password=user_credentials.password)
         token = user['idToken']
         print(token)
         return {
