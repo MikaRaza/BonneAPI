@@ -7,3 +7,8 @@ class products(BaseModel):
 
 class productsNoID(BaseModel):
     name: str
+    
+class User(BaseModel):
+
+    email: str
+    password: str
