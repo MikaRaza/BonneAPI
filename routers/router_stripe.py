@@ -12,42 +12,29 @@ from dotenv import dotenv_values
 config = dotenv_values(".env")
 stripe.api_key = config['STRIPE_SK']
 
-
 @router.get('/checkout')
-
 async def stripe_checkout():
-
     try:
-
         checkout_session = stripe.checkout.Session.create(
-
             line_items=[
-
                 {
-
-                    # PRICE ID du produit que vous vouler vendre
-
-                    'price':'price_1O51z4DKGmYqeYyOAyG0zLxK',
-
-                    'quantity' : 1,
-
+                    # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                    'price': 'price_1O51z4DKGmYqeYyOAyG0zLxK',
+                    'quantity': 1
                 },
-
             ],
-
-            mode='payment',
-
-            success_url=YOUR_DOMAIN + '/success.html',
-
-            cancel_url=YOUR_DOMAIN + '/cancel.html',
-
+            mode='subscription',
+            payment_method_types=['card'],
+            success_url=YOUR_DOMAIN + '/stripe/success', # à modif par u noveau endpoint pour ajouter le success -> webhook
+            cancel_url=YOUR_DOMAIN + '/stripe/cancel',
+            client_reference_id= "client_reference_id102312301230"
         )
-
-        return checkout_session
-
+        # return checkout_session
+        response = RedirectResponse(url=checkout_session['url'])
+        return response
     except Exception as e:
-
         return str(e)
+
 @router.post('/webhook')
 
 async def webhook_received(request:Request, stripe_signature: str = Header (None)):
