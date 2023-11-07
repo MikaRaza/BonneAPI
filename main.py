@@ -14,7 +14,8 @@ from fastapi import FastAPI
 app = FastAPI(
     title="Bon API-tit!",
     description=api_description,
-    openapi_tags= tags_metadata
+    openapi_tags= tags_metadata,
+    docs_url='/'
 )
 
 app.include_router(routers.router_products.router)
