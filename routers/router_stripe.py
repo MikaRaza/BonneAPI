@@ -8,7 +8,10 @@ router = APIRouter(tags=["Stripe"],
 
 YOUR_DOMAIN = 'http://localhost'
 
- 
+from dotenv import dotenv_values
+config = dotenv_values(".env")
+stripe.api_key = config['STRIPE_SK']
+
 
 @router.post('/checkout')
 
