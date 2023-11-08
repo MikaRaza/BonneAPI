@@ -29,9 +29,9 @@ async def get_product():
     return result_array
 
 @router.post('/', response_model=Product, status_code=201)
-async def create_product(givenName: str, givenPrice: float):
+async def create_product(givenName: ProductNoID):
     generatedId = str(uuid.uuid4())   
-    new_product = Product(id=generatedId, name=givenName.name, price=givenPrice)
+    new_product = Product(id=generatedId, name=givenName.name, price=givenName.price)
     db.child("products").child(generatedId).set(new_product.model_dump())  
     return new_product
 

@@ -1,12 +1,16 @@
 from pydantic import BaseModel
 
 # Model Pydantic = Datatype
-class products(BaseModel):
+class Product(BaseModel):
     id: str
     name: str
+    price: float
+    availability: bool
 
-class productsNoID(BaseModel):
+class ProductNoID(BaseModel):
     name: str
+    price: float
+
     
 class User(BaseModel):
 
