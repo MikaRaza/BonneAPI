@@ -9,8 +9,6 @@ class Product(BaseModel):
     id: str
     name: str
     price: float
-    availability: bool
-
 
 class ProductNoID(BaseModel):
     name: str
@@ -31,7 +29,7 @@ async def get_product():
 @router.post('/', response_model=Product, status_code=201)
 async def create_product(givenName: ProductNoID):
     generatedId = str(uuid.uuid4())   
-    new_product = Product(id=generatedId, name=givenName.name, price=givenName.price)
+    new_product = Product(id=str(generatedId), name=givenName.name, price=givenName.price)
     db.child("products").child(generatedId).set(new_product.model_dump())  
     return new_product
 
