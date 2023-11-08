@@ -24,22 +24,14 @@ class User(BaseModel):
 
 @router.get('/', response_model=List[Product])
 async def get_product():
-    products = []
-
-    # Retrieve products from Firebase
-    products_data = db.child("products").get().val()
-
-    if products_data:
-        # Convert Firebase data to a list of product objects
-        for product_id, product_info in products_data.items():
-            products.append(Product(id=product_id, name=product_info['name']))
-
-    return products
+    firebase_object = db.child('products').get().val()
+    result_array = [value for value in firebase_object.values()]
+    return result_array
 
 @router.post('/', response_model=Product, status_code=201)
-async def create_product(givenName: ProductNoID, givenPrice: ProductNoID): 
+async def create_product(givenName: str, givenPrice: float):
     generatedId = str(uuid.uuid4())   
-    new_product = Product(id=generatedId, name=givenName.name, price=givenPrice) 
+    new_product = Product(id=generatedId, name=givenName.name, price=givenPrice)
     db.child("products").child(generatedId).set(new_product.model_dump())  
     return new_product
 
