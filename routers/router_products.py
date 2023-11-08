@@ -2,11 +2,25 @@ from typing import List
 import uuid
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from classes.schema_dto import Product, ProductNoID
 from database.firebase import db
 router = APIRouter(prefix='/products', tags=['products'])
 
+class Product(BaseModel):
+    id: str
+    name: str
+    price: float
+    availability: bool
 
+
+class ProductNoID(BaseModel):
+    name: str
+    price: float
+    
+    
+class User(BaseModel):
+
+    email: str
+    password: str
 
 @router.get('/', response_model=List[Product])
 async def get_product():
