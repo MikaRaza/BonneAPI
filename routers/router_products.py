@@ -10,9 +10,26 @@ class Product(BaseModel):
     name: str
     price: float
 
+    class Config:
+        schema_extra = {
+            "example": {
+                "id": "12345",
+                "name": "Example Product",
+                "price": 10.99
+            }
+        }
+
 class ProductNoID(BaseModel):
     name: str
     price: float
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "name": "Example Product",
+                "price": 10.99
+            }
+        }
     
     
 class User(BaseModel):

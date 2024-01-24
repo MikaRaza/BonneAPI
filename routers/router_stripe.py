@@ -13,6 +13,13 @@ from dotenv import dotenv_values
 config = dotenv_values(".env")
 stripe.api_key = config['STRIPE_SK']
 
+@router.get('/usage')
+async def stripe_usage(userData: int = Depends(secure_endpoint)):
+    fireBase_user = auth.get_user(userData['uid'])
+    stripe_data = db.child("users").child(fireBase_user.uid).child("stripe").get().val()
+    cust_id = stripe_data["cust_id"]
+    return stripe.Invoice.upcoming(customer=cust_id)
+
 @router.get('/checkout')
 async def stripe_checkout():
     try:
